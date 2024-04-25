@@ -14,6 +14,7 @@ PLAYER: Surface = pygame.Surface((100,100))
 PLAYER_POS: Vector2 = pygame.Vector2(DISPLAY.get_width() / 2, DISPLAY.get_height() / 2)
 PLAYER_SPEED: int = 10
 CLOCK: Clock = pygame.time.Clock()
+laserList: list = []
 
 def inputHandler(keysPressed: ScancodeWrapper) -> None:
     if keysPressed[pygame.K_w]:
@@ -24,6 +25,8 @@ def inputHandler(keysPressed: ScancodeWrapper) -> None:
         PLAYER_POS.y += PLAYER_SPEED
     if keysPressed[pygame.K_d]:
         PLAYER_POS.x += PLAYER_SPEED
+    if keysPressed[pygame.K_SPACE]:
+        laserList.append(Laser(Vector2(PLAYER_POS.x, PLAYER_POS.y)))
 
 def keepPlayerInBounds(pPos: Vector2) -> Vector2:
     correctedPos = pPos
@@ -38,14 +41,29 @@ def keepPlayerInBounds(pPos: Vector2) -> Vector2:
         correctedPos.y = posY + 10
     return correctedPos
 
+class Laser:
+    def __init__(self, pos: Vector2):
+        self.x = pos.x + 50
+        self.y = pos.y
+        self.LASER = pygame.Surface((10,30))
+
+    def updatePos(self):
+        self.y -= 14
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+
     DISPLAY.fill(BG_COLOR)
     DISPLAY.blit(PLAYER, PLAYER_POS)
     inputHandler(pygame.key.get_pressed())
     PLAYER_POS = keepPlayerInBounds(PLAYER_POS)
+    for laser in laserList:
+        laser.updatePos()
+        DISPLAY.blit(laser.LASER, (laser.x, laser.y))
     CLOCK.tick(60)
     pygame.display.update()
+
+
