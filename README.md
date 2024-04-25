@@ -81,7 +81,7 @@ It calculates stuff you can do in your head.
 
 ### Built With
 
-* ![Static Badge](https://img.shields.io/badge/Python-000000?style=for-the-badge&logo=python)
+* ![Static Badge](https://img.shields.io/badge/Python-FFFFFF?style=for-the-badge&logo=python)
 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
