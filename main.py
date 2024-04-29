@@ -1,4 +1,5 @@
 import pygame, sys
+from random import randint
 from typing import Tuple
 from pygame.key import ScancodeWrapper
 from pygame.math import Vector2
@@ -15,6 +16,7 @@ PLAYER_POS: Vector2 = pygame.Vector2(DISPLAY.get_width() / 2, DISPLAY.get_height
 PLAYER_SPEED: int = 10
 CLOCK: Clock = pygame.time.Clock()
 laserList: list = []
+enemyLiust: list = []
 
 def inputHandler(keysPressed: ScancodeWrapper) -> None:
     if keysPressed[pygame.K_w]:
@@ -26,7 +28,8 @@ def inputHandler(keysPressed: ScancodeWrapper) -> None:
     if keysPressed[pygame.K_d]:
         PLAYER_POS.x += PLAYER_SPEED
     if keysPressed[pygame.K_SPACE]:
-        laserList.append(Laser(Vector2(PLAYER_POS.x, PLAYER_POS.y)))
+        if len(laserList) < 5:
+            laserList.append(Laser(Vector2(PLAYER_POS.x, PLAYER_POS.y)))
 
 def keepPlayerInBounds(pPos: Vector2) -> Vector2:
     correctedPos = pPos
@@ -45,10 +48,23 @@ class Laser:
     def __init__(self, pos: Vector2):
         self.x = pos.x + 50
         self.y = pos.y
-        self.LASER = pygame.Surface((10,30))
+        self.LASER = pygame.draw.circle(DISPLAY, "red", (self.x, self.y), 8)
 
     def updatePos(self):
-        self.y -= 14
+        self.y -= 20
+
+    def draw(self,win):
+        pygame.draw.circle(win, "red", (self.x,self.y), 8)
+
+
+class Enemy:
+    def __init__(self):
+        self.x = randint(20, WIDTH - 20)
+        self.y = -20
+    def updatePos(self):
+        self.y += 10
+    def draw(self, win):
+        pygame.draw.rect(win, "blue", (self.x, self.y), 8)
 
 while True:
     for event in pygame.event.get():
@@ -61,9 +77,11 @@ while True:
     inputHandler(pygame.key.get_pressed())
     PLAYER_POS = keepPlayerInBounds(PLAYER_POS)
     for laser in laserList:
-        laser.updatePos()
-        DISPLAY.blit(laser.LASER, (laser.x, laser.y))
+        if laser.y < 0:
+            laserList.pop(laserList.index(laser))
+        else:
+            laser.updatePos()
+            laser.draw(DISPLAY)
     CLOCK.tick(60)
     pygame.display.update()
-
 
