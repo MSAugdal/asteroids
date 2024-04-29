@@ -25,19 +25,19 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<h3 align="center">JS Basics Kalkulator</h3>
+<h3 align="center">Python Asteroids</h3>
 
   <p align="center">
-    Worlds most catching kalkulator
+    World's best (almost-)asteroids clone
     <br />
-    <a href="https://github.com/MSAugdal/jsBasicsKalkulator"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/MSAugdal/asteroids"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/MSAugdal/jsBasicsKalkulator">View Code</a>
+    <a href="https://github.com/MSAugdal/asteroids">View Code</a>
     ·
-    <a href="https://github.com/MSAugdal/jsBasicsKalkulator/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
+    <a href="https://github.com/MSAugdal/asteroids/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     ·
-    <a href="https://github.com/MSAugdal/jsBasicsKalkulator/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
+    <a href="https://github.com/MSAugdal/asteroids/issues/new?labels=enhancement&template=feature-request---.md">Request Feature</a>
   </p>
 </div>
 
@@ -70,11 +70,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Handleliste Screen Shot][product-screenshot]](https://github.com/MSAugdal/jsBasicsKalkulator)
-
 This project is built because i was tasked to make it in a school assignment.
 
-It calculates stuff you can do in your head.
+It tries as hard as it can. Don't give it too hard of a time
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
@@ -96,24 +94,22 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 To use this project locally, you need:
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
+* ![pip](https://pip.pypa.io/en/stable/installation/)
+* ![Python](https://www.python.org/downloads/)
 
 ### Installation
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/MSAugdal/jsBasicsKalkulator.git
+   git clone https://github.com/MSAugdal/asteroids.git
    ```
-2. Install NPM packages
+2. Install pip libraries
    ```sh
-   npm install
+   pip install requirements.txt
    ```
-3. Run dev server
+3. Run main.py
    ```sh
-    npm run dev
+    python3.8 main.py
    ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
@@ -133,7 +129,7 @@ Distributed under the GLWTS License.
 
 Mathias S Augdal - [@msaugdal](https://twitter.com/msaugdal) - mathias.s.augdal@gmail.com
 
-Project Link: [https://github.com/MSAugdal/jsBasicsKalkulator](https://github.com/MSAugdal/jsBasicsKalkulator)
+Project Link: [https://github.com/MSAugdal/asteroids](https://github.com/MSAugdal/asteroids)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -141,16 +137,16 @@ Project Link: [https://github.com/MSAugdal/jsBasicsKalkulator](https://github.co
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/MSAugdal/jsBasicsKalkulator.svg?style=for-the-badge
-[contributors-url]: https://github.com/MSAugdal/jsBasicsKalkulator/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/MSAugdal/jsBasicsKalkulator.svg?style=for-the-badge
-[forks-url]: https://github.com/MSAugdal/jsBasicsKalkulator/network/members
-[stars-shield]: https://img.shields.io/github/stars/MSAugdal/jsBasicsKalkulator.svg?style=for-the-badge
-[stars-url]: https://github.com/MSAugdal/jsBasicsKalkulator/stargazers
-[issues-shield]: https://img.shields.io/github/issues/MSAugdal/jsBasicsKalkulator.svg?style=for-the-badge
-[issues-url]: https://github.com/MSAugdal/jsBasicsKalkulator/issues
-[license-shield]: https://img.shields.io/github/license/MSAugdal/jsBasicsKalkulator.svg?style=for-the-badge
-[license-url]: https://github.com/MSAugdal/jsBasicsKalkulator/blob/master/LICENSE.md
+[contributors-shield]: https://img.shields.io/github/contributors/MSAugdal/asteroids.svg?style=for-the-badge
+[contributors-url]: https://github.com/MSAugdal/asteroids/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/MSAugdal/asteroids.svg?style=for-the-badge
+[forks-url]: https://github.com/MSAugdal/asteroids/network/members
+[stars-shield]: https://img.shields.io/github/stars/MSAugdal/asteroids.svg?style=for-the-badge
+[stars-url]: https://github.com/MSAugdal/asteroids/stargazers
+[issues-shield]: https://img.shields.io/github/issues/MSAugdal/asteroids.svg?style=for-the-badge
+[issues-url]: https://github.com/MSAugdal/asteroids/issues
+[license-shield]: https://img.shields.io/github/license/MSAugdal/asteroids.svg?style=for-the-badge
+[license-url]: https://github.com/MSAugdal/asteroids/blob/master/LICENSE.md
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/linkedin_username
 [product-screenshot]: images/screenshot.png
