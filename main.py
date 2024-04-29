@@ -5,67 +5,90 @@ from pygame.key import ScancodeWrapper
 from pygame.math import Vector2
 from pygame.surface import Surface
 from pygame.time import Clock
+from pygame import Rect
 
 pygame.init()
 WIDTH: int = 1024
 HEIGHT: int = 1024
 BG_COLOR: Tuple[int,int,int] = (100,100,100)
 DISPLAY: Surface = pygame.display.set_mode((HEIGHT, WIDTH))
-PLAYER: Surface = pygame.Surface((100,100))
-PLAYER_POS: Vector2 = pygame.Vector2(DISPLAY.get_width() / 2, DISPLAY.get_height() / 2)
-PLAYER_SPEED: int = 10
 CLOCK: Clock = pygame.time.Clock()
+score: int = 0
 laserList: list = []
-enemyLiust: list = []
+enemyList: list = []
 
-def inputHandler(keysPressed: ScancodeWrapper) -> None:
-    if keysPressed[pygame.K_w]:
-        PLAYER_POS.y -= PLAYER_SPEED
-    if keysPressed[pygame.K_a]:
-        PLAYER_POS.x -= PLAYER_SPEED
-    if keysPressed[pygame.K_s]:
-        PLAYER_POS.y += PLAYER_SPEED
-    if keysPressed[pygame.K_d]:
-        PLAYER_POS.x += PLAYER_SPEED
-    if keysPressed[pygame.K_SPACE]:
-        if len(laserList) < 5:
-            laserList.append(Laser(Vector2(PLAYER_POS.x, PLAYER_POS.y)))
+class Player:
+    def __init__(self):
+        self.rect: Rect = pygame.Rect(WIDTH//2, HEIGHT//2, 50, 50)
+        self.speed: int = 12
 
-def keepPlayerInBounds(pPos: Vector2) -> Vector2:
-    correctedPos = pPos
-    posX, posY = pPos
-    if posX >= WIDTH - 100:
-        correctedPos.x = posX - 10
-    if posX <= 0:
-        correctedPos.x = posX + 10
-    if posY >= HEIGHT - 100:
-        correctedPos.y = posY - 10
-    if posY <= 0:
-        correctedPos.y = posY + 10
-    return correctedPos
+    def inputHandler(self, keysPressed: ScancodeWrapper) -> None:
+        if keysPressed[pygame.K_w]:
+            self.rect.y -= self.speed
+        if keysPressed[pygame.K_a]:
+            self.rect.x -= self.speed
+        if keysPressed[pygame.K_s]:
+            self.rect.y += self.speed
+        if keysPressed[pygame.K_d]:
+            self.rect.x += self.speed
+        if keysPressed[pygame.K_SPACE]:
+            if len(laserList) < 5:
+                laserList.append(Laser(Vector2(self.rect.x - 25, self.rect.y)))
+
+    def keepInBounds(self) -> None:
+        if self.rect.x >= WIDTH - 100:
+            self.rect.x -= 10
+        if self.rect.x <= 0:
+            self.rect.x += 10
+        if self.rect.y >= HEIGHT - 100:
+            self.rect.y -= 10
+        if self.rect.y <= 0:
+            self.rect.y += 10
+
+    def draw(self):
+        pygame.draw.rect(DISPLAY, "black", self.rect)
+
+    def checkCollisionWithEnemy(self):
+        for enemy in enemyList:
+            if self.rect.colliderect(enemy.rect):
+                print(f"You died\nYour score was: {score}")
+                pygame.QUIT
+                sys.exit()
+
+class Enemy:
+    def __init__(self, x):
+        self.x = x
+        self.y = -20
+        self.rect = pygame.Rect(self.x, self.y, 40, 40)
+
+    def updatePos(self):
+        self.rect.y += round(10 + score*0.2) if score > 10 else 10
+    def draw(self):
+        pygame.draw.rect(DISPLAY, "blue", self.rect)
+
 
 class Laser:
     def __init__(self, pos: Vector2):
         self.x = pos.x + 50
         self.y = pos.y
-        self.LASER = pygame.draw.circle(DISPLAY, "red", (self.x, self.y), 8)
+        self.rect = pygame.Rect(self.x, self.y, 8, 8)
 
     def updatePos(self):
-        self.y -= 20
+        self.rect.y -= 20
 
-    def draw(self,win):
-        pygame.draw.circle(win, "red", (self.x,self.y), 8)
+    def draw(self):
+        pygame.draw.rect(DISPLAY, "red", self.rect)
+
+    def checkCollisionWithEnemy(self, enemy: Enemy):
+        global score
+        if enemy.rect.colliderect(self.rect):
+            enemyList.pop(enemyList.index(enemy))
+            score += 1
+            pygame.display.set_caption(f"score: {score}")
+            return True
 
 
-class Enemy:
-    def __init__(self):
-        self.x = randint(20, WIDTH - 20)
-        self.y = -20
-    def updatePos(self):
-        self.y += 10
-    def draw(self, win):
-        pygame.draw.rect(win, "blue", (self.x, self.y), 8)
-
+PLAYER = Player()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -73,15 +96,35 @@ while True:
             sys.exit()
 
     DISPLAY.fill(BG_COLOR)
-    DISPLAY.blit(PLAYER, PLAYER_POS)
-    inputHandler(pygame.key.get_pressed())
-    PLAYER_POS = keepPlayerInBounds(PLAYER_POS)
+
+    PLAYER.checkCollisionWithEnemy()
+    PLAYER.draw()
+    PLAYER.inputHandler(pygame.key.get_pressed())
+    PLAYER.keepInBounds()
+
+    # remove laser if out of bounds. update laser pos
     for laser in laserList:
-        if laser.y < 0:
+        if laser.rect.y < 0:
             laserList.pop(laserList.index(laser))
         else:
             laser.updatePos()
-            laser.draw(DISPLAY)
-    CLOCK.tick(60)
+            laser.draw()
+
+    # spawn enemies, update enemy pos, remove enemy if out of bounds
+    if len(enemyList) < 10:
+        enemyList.append(Enemy(randint(40, WIDTH - 40)))
+    for enemy in enemyList:
+        if enemy.rect.y > HEIGHT:
+            enemyList.pop(enemyList.index(enemy))
+        else:
+            enemy.updatePos()
+            enemy.draw()
+
+    # check for laser collision with enemy
+    for laser in laserList:
+        for enemy in enemyList:
+            laser.checkCollisionWithEnemy(enemy)
+
+    CLOCK.tick(30)
     pygame.display.update()
 
